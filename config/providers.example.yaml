@@ -1,0 +1,25 @@
+# Provider configurations for different backends
+providers:
+  openai_compatible:
+    base_url: ${OPENAI_API_BASE:-https://api.openai.com/v1}
+    api_key: ${OPENAI_API_KEY}
+    model: gpt-oss-20b
+    organization: null
+    timeout: 30
+    max_retries: 3
+    
+  huggingface:
+    token: ${HF_TOKEN}
+    use_auth_token: true
+    trust_remote_code: false
+    
+  local:
+    model_path: /path/to/local/model
+    device_map: auto
+    load_in_8bit: false
+    load_in_4bit: false
+    
+  mock:
+    responses_file: tests/fixtures/mock_responses.yaml
+    deterministic: true
+    latency_ms: 100

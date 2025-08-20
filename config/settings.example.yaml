@@ -1,0 +1,56 @@
+# Model backend configuration
+backend:
+  type: mock  # Options: hf_local, openai_compatible, mock
+  device: cpu  # Options: cuda, cpu, mps
+  dtype: float32  # Options: float16, bfloat16, float32
+  model_id: openai/gpt-oss-20b  # HuggingFace model ID
+  cache_dir: ~/.cache/huggingface
+
+# Sampling parameters
+sampling:
+  temperature: 0.7
+  top_p: 0.95
+  max_tokens: 512
+  stop_sequences:
+    - "\n\n"
+    - "END"
+  num_return_sequences: 1
+  do_sample: true
+
+# Deterministic settings
+seeds:
+  default: [0, 1, 2, 42, 1337]
+  deterministic: true
+  torch_deterministic: true
+
+# Timeout settings (seconds)
+timeouts:
+  generation: 30
+  batch: 300
+  total_run: 3600
+
+# Output configuration
+output:
+  base_dir: runs
+  format: json  # Options: json, csv, markdown
+  save_transcripts: true
+  save_metrics: true
+  compress: false
+
+# Logging
+logging:
+  level: INFO  # Options: DEBUG, INFO, WARNING, ERROR
+  file: redteam.log
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Retry configuration
+retry:
+  max_attempts: 3
+  backoff_factor: 2
+  max_backoff: 60
+
+# Batch processing
+batch:
+  size: 8
+  parallel: false
+  num_workers: 1

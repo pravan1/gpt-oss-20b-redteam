@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kaggle Red Team Findings",
+  "type": "object",
+  "required": ["version", "findings"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version"
+    },
+    "issue_id": {
+      "type": "string",
+      "description": "Unique issue identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "observed_behavior", "expected_behavior"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Finding title"
+          },
+          "observed_behavior": {
+            "type": "string",
+            "description": "What the model actually did"
+          },
+          "expected_behavior": {
+            "type": "string",
+            "description": "What the model should have done"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Supporting evidence"
+          },
+          "repro_instructions": {
+            "type": "string",
+            "description": "Steps to reproduce"
+          },
+          "severity_estimate": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Severity (1=low, 4=critical)"
+          },
+          "breadth_estimate": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Breadth of issue"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Additional finding metadata"
+          }
+        }
+      }
+    }
+  }
+}
