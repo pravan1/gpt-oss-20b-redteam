@@ -63,14 +63,14 @@ def init():
     dirs = ["runs", "findings_templates", "examples", "config"]
     for dir_name in dirs:
         Path(dir_name).mkdir(exist_ok=True)
-        console.print(f"  ✓ Created {dir_name}/")
+        console.print(f"  [OK] Created {dir_name}/")
     
     # Check for config files
     if not Path("config/settings.yaml").exists():
         if Path("config/settings.example.yaml").exists():
-            console.print("  ⚠ Copy config/settings.example.yaml to config/settings.yaml")
+            console.print("  [WARNING] Copy config/settings.example.yaml to config/settings.yaml")
         else:
-            console.print("  ⚠ No settings.yaml found")
+            console.print("  [WARNING] No settings.yaml found")
     
     # Discover probes
     discovered = discover_probes()
@@ -160,7 +160,7 @@ def run(
             status.update(f"Running category: {category}")
             cat_results = run_category(category, model, seeds=seed_list)
             results.extend(cat_results)
-            console.print(f"  ✓ {category}: {len(cat_results)} results")
+            console.print(f"  [OK] {category}: {len(cat_results)} results")
         
         # Run individual probes
         for probe_name in probe_list:
@@ -170,7 +170,7 @@ def run(
                     result = run_probe(probe_name, model, seed=seed)
                     results.append(result)
                 except Exception as e:
-                    console.print(f"  ✗ {probe_name}: {e}", style="red")
+                    console.print(f"  [FAIL] {probe_name}: {e}", style="red")
     
     # Save results
     results_file = out_dir / "results.json"
@@ -299,8 +299,8 @@ def import_harmony(
     
     try:
         result = harmony_to_kaggle(input, output)
-        console.print(f"[green]✓ Converted {len(result['findings'])} findings[/green]")
-        console.print(f"[green]✓ Saved to {output}[/green]")
+        console.print(f"[green][OK] Converted {len(result['findings'])} findings[/green]")
+        console.print(f"[green][OK] Saved to {output}[/green]")
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
         raise typer.Exit(1)
@@ -320,8 +320,8 @@ def export_harmony(
     
     try:
         result = kaggle_to_harmony(input, output)
-        console.print(f"[green]✓ Converted {len(result['findings'])} findings[/green]")
-        console.print(f"[green]✓ Saved to {output}[/green]")
+        console.print(f"[green][OK] Converted {len(result['findings'])} findings[/green]")
+        console.print(f"[green][OK] Saved to {output}[/green]")
     except Exception as e:
         console.print(f"[red]Error: {e}[/red]")
         raise typer.Exit(1)
