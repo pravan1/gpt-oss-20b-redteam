@@ -23,14 +23,19 @@ class GPTOSSClient:
     
     def __init__(self, api_key: str = None, base_url: str = None):
         # Check multiple sources for API configuration
-        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("GPT_OSS_API_KEY")
-        self.base_url = base_url or os.getenv("GPT_OSS_BASE_URL") or "https://api.openai.com/v1"
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("GPT_OSS_API_KEY") or "local-anything"
+        # IMPORTANT: Default to local vLLM server, not OpenAI API
+        self.base_url = base_url or os.getenv("OPENAI_BASE_URL") or os.getenv("GPT_OSS_BASE_URL") or "http://127.0.0.1:8000/v1"
         
-        # For local model
-        self.local_url = "http://localhost:8000/v1"  # Common local deployment
+        # For local model (now primary URL)
+        self.local_url = "http://127.0.0.1:8000/v1"  # vLLM local server
         
-        if not self.api_key:
-            print("WARNING: No API key found. Set GPT_OSS_API_KEY environment variable")
+        # For local vLLM server, API key can be anything
+        if self.base_url.startswith("http://127.0.0.1") or self.base_url.startswith("http://localhost"):
+            print(f"Using local vLLM server at: {self.base_url}")
+            self.mock_mode = False
+        elif not self.api_key or self.api_key == "local-anything":
+            print("WARNING: No valid API key for remote server")
             print("Using mock mode for testing...")
             self.mock_mode = True
         else:
